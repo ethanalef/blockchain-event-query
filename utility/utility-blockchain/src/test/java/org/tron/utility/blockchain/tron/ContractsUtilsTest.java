@@ -1,7 +1,7 @@
 package org.tron.utility.blockchain.tron;
 
 import org.junit.jupiter.api.Test;
-import org.tron.utility.BaseTest;
+import org.tron.utility.blockchain.BaseTest;
 
 class ContractsUtilsTest extends BaseTest {
 

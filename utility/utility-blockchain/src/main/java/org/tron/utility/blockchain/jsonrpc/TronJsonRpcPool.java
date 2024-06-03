@@ -1,9 +1,9 @@
-package org.tron.utility.jsonrpc;
+package org.tron.utility.blockchain.jsonrpc;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.tron.utility.web3j.Web3jWrapper;
+import org.tron.utility.blockchain.jsonrpc.web3j.Web3jWrapper;
 
 import java.util.List;
 

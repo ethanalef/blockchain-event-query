@@ -1,4 +1,4 @@
-package org.tron.utility.jsonrpc;
+package org.tron.utility.blockchain.jsonrpc;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

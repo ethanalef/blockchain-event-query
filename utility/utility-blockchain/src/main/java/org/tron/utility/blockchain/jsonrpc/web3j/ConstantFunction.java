@@ -1,4 +1,4 @@
-package org.tron.utility.web3j;
+package org.tron.utility.blockchain.jsonrpc.web3j;
 
 import org.web3j.abi.TypeReference;
 import org.web3j.abi.datatypes.Address;

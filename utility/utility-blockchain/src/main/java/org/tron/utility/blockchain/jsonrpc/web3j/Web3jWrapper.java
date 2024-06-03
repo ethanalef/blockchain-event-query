@@ -1,4 +1,4 @@
-package org.tron.utility.web3j;
+package org.tron.utility.blockchain.jsonrpc.web3j;
 
 import lombok.Getter;
 import org.springframework.retry.annotation.Retryable;

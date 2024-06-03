@@ -1,4 +1,4 @@
-package org.tron.utility.web3j.dto;
+package org.tron.utility.blockchain.jsonrpc.web3j.dto;
 
 import lombok.Data;
 import org.web3j.utils.Numeric;

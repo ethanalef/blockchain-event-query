@@ -4,9 +4,9 @@ package org.tron.utility.blockchain.tron;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.tron.utility.blockchain.eth.EthJsonRpc;
-import org.tron.utility.jsonrpc.JsonRpcPool;
-import org.tron.utility.web3j.Web3jQuery;
-import org.tron.utility.web3j.Web3jQueryException;
+import org.tron.utility.blockchain.jsonrpc.JsonRpcPool;
+import org.tron.utility.blockchain.jsonrpc.web3j.Web3jQuery;
+import org.tron.utility.blockchain.jsonrpc.web3j.Web3jQueryException;
 import org.web3j.abi.datatypes.Function;
 import org.web3j.protocol.core.methods.request.EthFilter;
 

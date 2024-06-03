@@ -1,8 +1,8 @@
-package org.tron.utility.jsonrpc;
+package org.tron.utility.blockchain.jsonrpc;
 
 
 import org.springframework.util.StringUtils;
-import org.tron.utility.web3j.Web3jWrapper;
+import org.tron.utility.blockchain.jsonrpc.web3j.Web3jWrapper;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
 

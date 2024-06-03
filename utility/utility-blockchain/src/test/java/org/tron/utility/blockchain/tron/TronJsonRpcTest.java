@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
-import org.tron.utility.BaseTest;
+import org.tron.utility.blockchain.BaseTest;
 import org.web3j.protocol.core.methods.request.EthFilter;
 
 import java.math.BigInteger;
