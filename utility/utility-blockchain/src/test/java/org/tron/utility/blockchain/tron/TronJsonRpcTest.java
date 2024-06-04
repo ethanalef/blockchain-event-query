@@ -130,6 +130,13 @@ class TronJsonRpcTest extends BaseTest {
   }
 
   @Test
+  @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'prod'}", loadContext = true)
+  void getTxnReceipt_PROD_Test() {
+    // user liquidated
+    var receipt = tronJsonRpc.getTxnReceipt("38cc4a3eec942c18def5a3a628fc81b1c7bea8327922ded7f5e0ace4d307fb4a");
+  }
+
+  @Test
   @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'dev'}", loadContext = true)
   void getTxnById_TransferTrx_Test() {
     // get filtered Block+TxnHsh

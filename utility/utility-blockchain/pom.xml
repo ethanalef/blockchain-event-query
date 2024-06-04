@@ -15,7 +15,6 @@
 	<description>Utility for blockchain query</description>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.tron</groupId>
 			<artifactId>utility-common</artifactId>

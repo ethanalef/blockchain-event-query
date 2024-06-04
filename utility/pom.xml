@@ -19,6 +19,7 @@
   <modules>
     <module>utility-common</module>
     <module>utility-blockchain</module>
+    <module>utility-mongodb</module>
   </modules>
 
   <dependencyManagement>
@@ -31,6 +32,11 @@
       <dependency>
         <groupId>org.tron</groupId>
         <artifactId>utility-blockchain</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.tron</groupId>
+        <artifactId>utility-mongodb</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>
