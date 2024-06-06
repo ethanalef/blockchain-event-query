@@ -134,6 +134,8 @@ class TronJsonRpcTest extends BaseTest {
   void getTxnReceipt_PROD_Test() {
     // user liquidated
     var receipt = tronJsonRpc.getTxnReceipt("38cc4a3eec942c18def5a3a628fc81b1c7bea8327922ded7f5e0ace4d307fb4a");
+    var receiptDTO = tronJsonRpc.getTransactionReceiptDTO("38cc4a3eec942c18def5a3a628fc81b1c7bea8327922ded7f5e0ace4d307fb4a");
+    var log = tronJsonRpc.getTransactionByHash("38cc4a3eec942c18def5a3a628fc81b1c7bea8327922ded7f5e0ace4d307fb4a");
   }
 
   @Test
@@ -148,7 +150,7 @@ class TronJsonRpcTest extends BaseTest {
   void getAllTxnOfAnAccount_Test() {
     // get filtered Block+TxnHsh
 //    var receipt = tronJsonRpc.getTxnReceipt("fd1dee209763467a4072eb0d82ab08a3f323c04eebde602a4387c7a54ccc1908");
-    var filter = tronJsonRpc.getEthFilter(new BigInteger("61437737"), new BigInteger("61447964"), null, List.of("TKRQdrYXgrFSBx6jjfqRv6vFdsDZA9iG4q"));
+    var filter = tronJsonRpc.getEthFilter(new BigInteger("62263881"), new BigInteger("62263881"), List.of("da6e3523d5765dedff9534b488c7e508318178571c144293451989755e9379e7"), List.of("TU2MJ5Veik1LRAgjeSzEdvmDYx7mefJZvd"));
     var logs = tronJsonRpc.getLog(filter);
   }
 

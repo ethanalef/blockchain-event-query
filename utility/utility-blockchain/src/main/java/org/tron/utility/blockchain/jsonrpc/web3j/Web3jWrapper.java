@@ -1,6 +1,7 @@
 package org.tron.utility.blockchain.jsonrpc.web3j;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.retry.annotation.Retryable;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameter;
@@ -11,15 +12,11 @@ import org.web3j.protocol.core.methods.response.*;
 
 import java.io.IOException;
 
+@RequiredArgsConstructor
 public class Web3jWrapper {
   private final Web3j web3j;
   @Getter
   private final String identifier;
-
-  public Web3jWrapper(Web3j web3j, String identifier) {
-    this.web3j = web3j;
-    this.identifier = identifier;
-  }
 
   @Retryable(retryFor = { IOException.class })
   public EthBlockNumber ethBlockNumber() throws IOException {

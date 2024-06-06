@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import static org.web3j.abi.EventEncoder.buildEventSignature;
 import static org.web3j.protocol.core.methods.request.Transaction.createEthCallTransaction;
 
 @Component
@@ -71,12 +72,16 @@ public class EthJsonRpc implements Web3jQuery {
       DefaultBlockParameter.valueOf(startBlockNum),
       DefaultBlockParameter.valueOf(endBlockNum),
       contracts);
-    if (topics == null)   // seems not supported
+    if (topics == null) {  // seems not supported
       filter.addNullTopic();
-    else if (topics.size() == 1)
-      filter.addSingleTopic(topics.getFirst());
-    else
-      filter.addOptionalTopics(topics.toArray(new String[0]));
+      return filter;
+    }
+    List<String> hashTopics = topics.stream().map(t -> buildEventSignature(t).substring(2)).toList();
+    if (hashTopics.size() == 1) {
+      filter.addSingleTopic(hashTopics.getFirst());
+    } else {
+      filter.addOptionalTopics(hashTopics.toArray(new String[0]));
+    }
     return filter;
   }
 
