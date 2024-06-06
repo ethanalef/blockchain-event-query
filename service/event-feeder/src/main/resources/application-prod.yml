@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      host: 192.168.1.27
+      port: 27017
+      database: tron
+      auto-index-creation: true
+
+#----------logback---------------
+logging:
+  level:
+    root: INFO
+    org.tron.org.tron: DEBUG
+

@@ -1,4 +1,5 @@
 jrpc-nodes:
+  rate: 5
   tron:
     - id: prod-trongrid-node-1
       node: https://api.trongrid.io/jsonrpc

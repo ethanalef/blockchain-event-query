@@ -3,4 +3,3 @@ spring:
     name: Event Feeder
   profiles:
     active: prod
-

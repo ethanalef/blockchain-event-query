@@ -1,0 +1,16 @@
+{
+  "event": "strx-account-record",
+  "enabled": true,
+  "interval": 4000,
+  "range": 30000,
+  "start": 61564523,
+  "topic": [
+    "Deposit(address,uint256,uint256,uint256)",
+    "Withdraw(address,uint256,uint256,uint256)",
+    "Claim(address,uint256)",
+    "Transfer(address,address,uint256)"
+  ],
+  "contract": [
+    "TU3kjFuhtEo42tsCBtfYUAZxoqQ4yuSLQ5"
+  ]
+}

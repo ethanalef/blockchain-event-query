@@ -26,6 +26,12 @@
         <artifactId>utility-blockchain</artifactId>
         <version>${project.version}</version>
       </dependency>
+
+      <dependency>
+        <groupId>org.tron</groupId>
+        <artifactId>utility-mongodb</artifactId>
+        <version>${project.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 

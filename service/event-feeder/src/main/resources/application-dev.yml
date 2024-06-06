@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      host: 192.168.1.27
+      port: 27017
+      database: tron
+      auto-index-creation: true
+
+#feeder:
+#  - name: strx-account-record
+#    enabled: true
+#    interval: 4000
+#    range: 30000
+#    start: 61564523
