@@ -1,7 +1,9 @@
 package org.tron.utility.mongodb.model;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.FieldType;
@@ -27,17 +29,20 @@ import java.util.List;
 @Document(collection = "eventlog")
 @Accessors(chain = true)
 @Builder
-public record EventLog(
+@Data
+@CompoundIndex(name = "transactionId_logIndex_idx", def = "{'transactionId': 1, 'logIndex': 1}", unique = true)
+public class EventLog {
   @MongoId(FieldType.OBJECT_ID)
-  String id,
+  private String id;
   @Indexed
-  BigInteger blockNumber,
-  Instant blockTime,
-  String transactionId,
-  int logIndex,
-  String contractAddress,
-  String from,
-  String to,
-  List<String> topics,
-  String dataRaw
-) {}
+  private BigInteger blockNumber;
+  private Instant blockTime;
+  @Indexed
+  String transactionId;
+  private int logIndex;
+  private String contractAddress;
+  private String from;
+  private String to;
+  private List<String> topics;
+  private String dataRaw;
+}

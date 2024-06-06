@@ -6,4 +6,5 @@ import org.tron.utility.mongodb.model.EventLog;
 
 @Repository
 public interface EventLogRepository extends MongoRepository<EventLog, String> {
+  EventLog findByTransactionIdAndLogIndex(String transactionId, int logIndex);
 }
