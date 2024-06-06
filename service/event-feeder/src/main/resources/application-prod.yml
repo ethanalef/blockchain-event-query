@@ -10,5 +10,5 @@ spring:
 logging:
   level:
     root: INFO
-    org.tron.org.tron: DEBUG
+    org.tron: DEBUG
 

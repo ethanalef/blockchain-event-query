@@ -1,4 +1,4 @@
-package org.tron.eventfeeder;
+package org.tron.service.eventfeeder;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;

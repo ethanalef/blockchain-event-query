@@ -1,4 +1,4 @@
-package org.tron.eventfeeder;
+package org.tron.service.eventfeeder;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

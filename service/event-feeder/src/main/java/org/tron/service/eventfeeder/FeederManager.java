@@ -1,4 +1,4 @@
-package org.tron.eventfeeder;
+package org.tron.service.eventfeeder;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

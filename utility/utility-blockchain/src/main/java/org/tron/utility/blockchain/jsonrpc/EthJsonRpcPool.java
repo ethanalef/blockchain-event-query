@@ -16,8 +16,4 @@ public class EthJsonRpcPool implements JsonRpcPool {
   public List<Web3jWrapper> web3jPool() {
     return createWeb3jPool(jsonRpcNodes.getEth());
   }
-
-  public double getRate() {
-    return jsonRpcNodes.getRate();
-  }
 }

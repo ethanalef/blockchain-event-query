@@ -28,7 +28,7 @@ public class TronJsonRpcPool implements JsonRpcPool {
   public Web3jWrapper getWeb3j() {
     long t1 = System.currentTimeMillis();
     rateLimiter.acquire();
-    log.info("acquire {} {}ms", web3jPool().get(index.get() % web3jPool().size()).getIdentifier(), System.currentTimeMillis() - t1);
+    log.debug("acquire {} {}ms", web3jPool().get(index.get() % web3jPool().size()).getIdentifier(), System.currentTimeMillis() - t1);
     int currentIndex = index.getAndIncrement() % web3jPool().size();
     return web3jPool().get(currentIndex);
   }

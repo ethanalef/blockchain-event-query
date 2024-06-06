@@ -1,11 +1,11 @@
-package org.tron.eventfeeder;
+package org.tron.service.eventfeeder;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 
-@SpringBootApplication(scanBasePackages = {"org.tron.eventfeeder", "org.tron.utility"})
+@SpringBootApplication(scanBasePackages = {"org.tron.service.eventfeeder", "org.tron.utility"})
 @EnableScheduling
 public class EventFeederApplication {
   public static void main(String[] args) {
