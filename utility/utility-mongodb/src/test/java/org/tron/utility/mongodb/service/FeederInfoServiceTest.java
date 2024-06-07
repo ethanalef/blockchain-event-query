@@ -18,7 +18,7 @@ public class FeederInfoServiceTest extends BaseTest {
                               .event("strx-account-record")
                               .enabled(true)
                               .interval(4000)
-                              .range(BigInteger.valueOf(30000))
+                              .range(BigInteger.valueOf(20000))
                               .start(BigInteger.valueOf(61564523))
                               .topic(Lists.newArrayList(
                                 "Deposit(address,uint256,uint256,uint256)",

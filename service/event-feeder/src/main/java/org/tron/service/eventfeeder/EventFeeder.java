@@ -30,7 +30,7 @@ public abstract class EventFeeder {
     if (processedHeight != null) {
       return processedHeight;
     }
-    FeederInfo info = feederInfoService.findByEvent(feederInfo.getEvent());
+    FeederInfo info = feederInfoService.getFeederInfoByEvent(feederInfo.getEvent());
     return Optional.ofNullable(info).map(FeederInfo::getProcessedHeight).orElse(feederInfo.getStart());
   }
 
@@ -41,11 +41,13 @@ public abstract class EventFeeder {
   }
 
   public void step() {
-    BigInteger from = getProcessedHeight().add(BigInteger.ONE);
-    try {
-      step(from);
-    } catch (Exception e) {
-      log.error("step exception", e);
+    if (feederInfo.isEnabled()) {
+      BigInteger from = getProcessedHeight().add(BigInteger.ONE);
+      try {
+        step(from);
+      } catch (Exception e) {
+        log.error("Exception occurs at event feeder " + feederInfo.getEvent(), e);
+      }
     }
   }
 
@@ -59,14 +61,18 @@ public abstract class EventFeeder {
     }
     BigInteger to = currentHeight.compareTo(from.add(feederInfo.getRange())) < 0 ? currentHeight : from.add(feederInfo.getRange());
     List<EventLog> eventLogs = fetchEventLog(from, to);
-
-    eventLogService.upsert(eventLogs);
-    updateProcessedHeight(to);
     int found = eventLogs.size();
-    if (found > 0) {
+    if (found == 1) {
+      // Use single upsert for only one entry
+      eventLogService.upsert(eventLogs.getFirst());
+      log.info("{} Found 1", feederInfo.getEvent());
+    } else if (found > 1) {
+      // Use bulk upsert for more than one entry
+      eventLogService.upsert(eventLogs);
       log.info("{} Found {}", feederInfo.getEvent(), eventLogs.size());
     }
-    log.debug("{} step in {} ms", feederInfo.getEvent(), System.currentTimeMillis() - t);
+    updateProcessedHeight(to);
+    log.debug("{} step is finished in {} ms", feederInfo.getEvent(), System.currentTimeMillis() - t);
   }
 
   public List<EventLog> fetchEventLog(BigInteger from, BigInteger to) {

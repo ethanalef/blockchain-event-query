@@ -1,68 +1,62 @@
 package org.tron.utility.mongodb.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.BulkOperations;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tron.utility.mongodb.model.EventLog;
-import org.tron.utility.mongodb.repository.EventLogRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class EventLogService {
-  private final EventLogRepository eventLogRepository;
+  private final MongoTemplate mongoTemplate;
 
   public void upsert(EventLog eventLog) {
-    // Check if an EventLog with the same transactionId and logIndex already exists
-    EventLog existingEventLog = eventLogRepository.findByTransactionIdAndLogIndex(eventLog.getTransactionId(), eventLog.getLogIndex());
-    if (existingEventLog != null) {
-      // Update the existing EventLog
-      existingEventLog.setBlockNumber(eventLog.getBlockNumber());
-      existingEventLog.setBlockTime(eventLog.getBlockTime());
-      existingEventLog.setContractAddress(eventLog.getContractAddress());
-      existingEventLog.setFrom(eventLog.getFrom());
-      existingEventLog.setTo(eventLog.getTo());
-      existingEventLog.setTopics(eventLog.getTopics());
-      existingEventLog.setDataRaw(eventLog.getDataRaw());
-      eventLogRepository.save(existingEventLog);
-    } else {
-      // Insert the new EventLog
-      eventLogRepository.save(eventLog);
-    }
+    Query query = createQuery(eventLog);
+    Update update = createUpdate(eventLog);
+
+    mongoTemplate.findAndModify(query, update,
+      new FindAndModifyOptions().returnNew(true).upsert(true),
+      EventLog.class);
   }
 
   public void upsert(List<EventLog> eventLogs) {
-    List<EventLog> logsToUpdate = new ArrayList<>();
-    List<EventLog> logsToInsert = new ArrayList<>();
+    if (eventLogs == null || eventLogs.isEmpty()) {
+      throw new IllegalArgumentException("The list of event logs is empty.");
+    }
+
+    BulkOperations bulkOps = mongoTemplate.bulkOps(BulkOperations.BulkMode.UNORDERED, EventLog.class);
 
     for (EventLog eventLog : eventLogs) {
-      // Check if an EventLog with the same transactionId and logIndex already exists
-      EventLog existingEventLog = eventLogRepository.findByTransactionIdAndLogIndex(eventLog.getTransactionId(), eventLog.getLogIndex());
-      if (existingEventLog != null) {
-        // Update the existing EventLog
-        existingEventLog.setBlockNumber(eventLog.getBlockNumber());
-        existingEventLog.setBlockTime(eventLog.getBlockTime());
-        existingEventLog.setContractAddress(eventLog.getContractAddress());
-        existingEventLog.setFrom(eventLog.getFrom());
-        existingEventLog.setTo(eventLog.getTo());
-        existingEventLog.setTopics(eventLog.getTopics());
-        existingEventLog.setDataRaw(eventLog.getDataRaw());
-        logsToUpdate.add(existingEventLog);
-      } else {
-        // Insert the new EventLog
-        logsToInsert.add(eventLog);
-      }
+      Query query = createQuery(eventLog);
+      Update update = createUpdate(eventLog);
+      bulkOps.upsert(query, update);
     }
 
-    // Perform batch save for updates and inserts
-    if (!logsToUpdate.isEmpty()) {
-      eventLogRepository.saveAll(logsToUpdate);
-    }
-    if (!logsToInsert.isEmpty()) {
-      eventLogRepository.saveAll(logsToInsert);
-    }
+    bulkOps.execute();
+  }
+
+  private Query createQuery(EventLog eventLog) {
+    return new Query().addCriteria(Criteria.where("transactionId").is(eventLog.getTransactionId())
+                                     .and("logIndex").is(eventLog.getLogIndex()));
+  }
+
+  private Update createUpdate(EventLog eventLog) {
+    return new Update()
+             .set("blockNumber", eventLog.getBlockNumber())
+             .set("blockTime", eventLog.getBlockTime())
+             .set("contractAddress", eventLog.getContractAddress())
+             .set("from", eventLog.getFrom())
+             .set("to", eventLog.getTo())
+             .set("topics", eventLog.getTopics())
+             .set("dataRaw", eventLog.getDataRaw());
   }
 }

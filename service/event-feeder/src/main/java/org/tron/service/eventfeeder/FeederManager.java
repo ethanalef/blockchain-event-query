@@ -2,6 +2,7 @@ package org.tron.service.eventfeeder;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.tron.utility.blockchain.tron.TronJsonRpc;
 import org.tron.utility.mongodb.service.EventLogService;
@@ -13,6 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class FeederManager {
@@ -26,7 +28,10 @@ public class FeederManager {
   public void init() {
     eventFeeders = new HashSet<>();
     feederInfoService.findAll()
-      .forEach(feederInfo -> eventFeeders.add(new TronEventFeeder(feederInfo, feederInfoService, eventLogService, tronJsonRpc)));
+      .forEach(feederInfo -> {
+        eventFeeders.add(new TronEventFeeder(feederInfo, feederInfoService, eventLogService, tronJsonRpc));
+        log.info("Register event-feeder {}", feederInfo.getEvent());
+      });
     scheduler = Executors.newScheduledThreadPool(eventFeeders.size());
     startSchedulers();
   }
@@ -37,13 +42,4 @@ public class FeederManager {
       scheduler.scheduleAtFixedRate(feeder::step, 0, interval, TimeUnit.MILLISECONDS);
     }
   }
-
-  //  @Scheduled(fixedDelay = 5000L)
-//  public void runTesk() {
-//    try {
-//      eventFeeders.forEach(EventFeeder::step);
-//    } catch (Exception e) {
-//      int n = 0;
-//    }
-//  }
 }
