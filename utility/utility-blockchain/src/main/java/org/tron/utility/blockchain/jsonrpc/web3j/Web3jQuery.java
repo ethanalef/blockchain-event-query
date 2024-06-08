@@ -1,7 +1,7 @@
 package org.tron.utility.blockchain.jsonrpc.web3j;
 
-import org.tron.utility.blockchain.jsonrpc.web3j.dto.TransactionReceiptDTO;
 import org.tron.utility.blockchain.jsonrpc.web3j.dto.BlockDTO;
+import org.tron.utility.blockchain.jsonrpc.web3j.dto.TransactionReceiptDTO;
 import org.web3j.protocol.core.methods.request.EthFilter;
 import org.web3j.protocol.core.methods.response.EthLog;
 import org.web3j.protocol.core.methods.response.EthTransaction;

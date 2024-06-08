@@ -117,6 +117,7 @@ public class EthJsonRpc implements Web3jQuery {
     }
   }
 
+  // TODO: cache 1 day
   public Instant getBlockTime(BigInteger height) throws Web3jQueryException {
     BlockDTO blockDTO = getBlock(height);
     try {
