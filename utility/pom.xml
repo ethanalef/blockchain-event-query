@@ -18,6 +18,7 @@
 
   <modules>
     <module>utility-common</module>
+    <module>utility-cache</module>
     <module>utility-blockchain</module>
     <module>utility-mongodb</module>
   </modules>
@@ -27,6 +28,11 @@
       <dependency>
         <groupId>org.tron</groupId>
         <artifactId>utility-common</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.tron</groupId>
+        <artifactId>utility-cache</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

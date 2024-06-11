@@ -1,0 +1,3 @@
+cache:
+  ttl:
+    cached-key-in-300-seconds: 300
