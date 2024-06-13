@@ -12,3 +12,7 @@ logging:
     root: INFO
     org.tron: DEBUG
 
+#----------L1---------------
+cache:
+  caffeine:
+    enabled: true

@@ -1,5 +1,6 @@
 package org.tron.service.eventfeeder;
 
+import lombok.extern.slf4j.Slf4j;
 import org.tron.utility.blockchain.jsonrpc.web3j.dto.TransactionReceiptDTO;
 import org.tron.utility.blockchain.tron.TronAddressUtils;
 import org.tron.utility.blockchain.tron.TronJsonRpc;
@@ -8,18 +9,25 @@ import org.tron.utility.mongodb.model.FeederInfo;
 import org.tron.utility.mongodb.service.EventLogService;
 import org.tron.utility.mongodb.service.FeederInfoService;
 
+import java.math.BigInteger;
 import java.time.Instant;
 import java.util.List;
 
 import static org.web3j.abi.EventEncoder.buildEventSignature;
 
+@Slf4j
 public class TronEventFeeder extends EventFeeder {
+  private final CacheHelper cacheHelper;
+
+
   protected TronEventFeeder(
     FeederInfo feederInfo,
     FeederInfoService feederInfoService,
     EventLogService eventLogService,
-    TronJsonRpc tronJsonRpc) {
+    TronJsonRpc tronJsonRpc,
+    CacheHelper cacheHelper) {
     super(feederInfo, feederInfoService, eventLogService, tronJsonRpc);
+    this.cacheHelper = cacheHelper;
     topicHash = feederInfo.getTopic().stream().map(t -> buildEventSignature(t).substring(2)).toList();
   }
 
@@ -37,5 +45,16 @@ public class TronEventFeeder extends EventFeeder {
                .logIndex(Integer.parseInt(log.getLogIndex()))
                .blockTime(timestamp)
                .build()).toList();
+  }
+
+  public BigInteger getCachedCurrentHeight() {
+    log.debug("getCachedCurrentHeight {}", feederInfo.getEvent());
+    return cacheHelper.getTronCurrentHeight();
+  }
+
+
+  public Instant getCachedBlockTime(BigInteger height) {
+    log.debug("getCachedBlockTime {} {}", height, feederInfo.getEvent());
+    return cacheHelper.getTronBlockTime(height);
   }
 }

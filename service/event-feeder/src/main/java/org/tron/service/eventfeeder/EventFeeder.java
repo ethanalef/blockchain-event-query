@@ -19,9 +19,9 @@ import java.util.*;
 @RequiredArgsConstructor
 public abstract class EventFeeder {
   @Getter
-  private final FeederInfo feederInfo;
-  private final FeederInfoService feederInfoService;
-  private final EventLogService eventLogService;
+  protected final FeederInfo feederInfo;
+  protected final FeederInfoService feederInfoService;
+  protected final EventLogService eventLogService;
   protected final Web3jQuery web3jQuery;
   protected BigInteger processedHeight;
   protected List<String> topicHash;
@@ -54,7 +54,7 @@ public abstract class EventFeeder {
   public void step(BigInteger from) {
     // TODO: use @Timed for measuring cost
     long t = System.currentTimeMillis();
-    BigInteger currentHeight = web3jQuery.getCurrentHeight();
+    BigInteger currentHeight = getCachedCurrentHeight();
     if (currentHeight.compareTo(from) < 0) {
       log.warn("Query height = {} but current height = {} diff = {}}", currentHeight, from, from.subtract(currentHeight));
       return;
@@ -88,7 +88,7 @@ public abstract class EventFeeder {
     List<EventLog> result = new ArrayList<>();
     for (var entry : blockTxnMap.entrySet()) {
       // get block info with timestamp
-      Instant timestamp = web3jQuery.getBlockTime(entry.getKey());
+      Instant timestamp = getCachedBlockTime(entry.getKey());
 
       // get transaction logs
       List<TransactionReceiptDTO> transactionLogDTOList = entry.getValue().stream()
@@ -111,4 +111,9 @@ public abstract class EventFeeder {
   }
 
   protected abstract List<EventLog> getEventLog(TransactionReceiptDTO transactionReceiptDTO, Instant timestamp);
+
+  protected abstract BigInteger getCachedCurrentHeight();
+
+  protected abstract Instant getCachedBlockTime(BigInteger blockNumber);
+
 }
