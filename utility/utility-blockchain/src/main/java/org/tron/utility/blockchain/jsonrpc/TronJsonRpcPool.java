@@ -16,7 +16,12 @@ public class TronJsonRpcPool implements JsonRpcPool {
 
   public TronJsonRpcPool(JsonRpcNodes jsonRpcNodes) {
     this.jsonRpcNodes = jsonRpcNodes;
-    this.rateLimiter = RateLimiter.create(jsonRpcNodes.getRate());
+    double rate = jsonRpcNodes.getRate();
+    if (rate > 0.0) {
+      this.rateLimiter = RateLimiter.create(jsonRpcNodes.getRate());
+    } else {
+      rateLimiter = null;
+    }
   }
 
   @Bean(name = "tronWeb3jPool")
@@ -27,7 +32,9 @@ public class TronJsonRpcPool implements JsonRpcPool {
   @Override
   public Web3jWrapper getWeb3j() {
     long t1 = System.currentTimeMillis();
-    rateLimiter.acquire();
+    if (rateLimiter != null) {
+      rateLimiter.acquire();
+    }
     log.debug("acquire {} {}ms", web3jPool().get(index.get() % web3jPool().size()).getIdentifier(), System.currentTimeMillis() - t1);
     int currentIndex = index.getAndIncrement() % web3jPool().size();
     return web3jPool().get(currentIndex);
