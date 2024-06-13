@@ -65,11 +65,11 @@ public abstract class EventFeeder {
     if (found == 1) {
       // Use single upsert for only one entry
       eventLogService.upsert(eventLogs.getFirst());
-      log.info("{} Found 1", feederInfo.getEvent());
+      log.info("{} Found 1 at {}", feederInfo.getEvent(), eventLogs.getFirst().getBlockNumber());
     } else if (found > 1) {
       // Use bulk upsert for more than one entry
       eventLogService.upsert(eventLogs);
-      log.info("{} Found {}", feederInfo.getEvent(), eventLogs.size());
+      log.info("{} Found {} from {}", feederInfo.getEvent(), eventLogs.size(), eventLogs.getFirst().getBlockNumber());
     }
     updateProcessedHeight(to);
     log.debug("{} step is finished in {} ms", feederInfo.getEvent(), System.currentTimeMillis() - t);
