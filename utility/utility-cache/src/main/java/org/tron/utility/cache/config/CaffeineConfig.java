@@ -3,6 +3,7 @@ package org.tron.utility.cache.config;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCache;
@@ -25,6 +26,7 @@ public class CaffeineConfig {
   @Bean
   @Primary
   @Qualifier("L1CacheManager")
+  @ConditionalOnProperty(prefix = "cache.caffeine", name = "enabled", havingValue = "true", matchIfMissing = false)
   public CacheManager caffeineCacheManager() {
     SimpleCacheManager simpleCacheManager = new SimpleCacheManager();
     simpleCacheManager.setCaches(getCacheConfig());
@@ -36,11 +38,12 @@ public class CaffeineConfig {
     Map<String, Long> map = cachedKeysProperties.getTtl();
     map.forEach((key, value) -> config.add(
       new CaffeineCache(key, Caffeine.newBuilder()
-                               .expireAfterWrite(Duration.ofMinutes(1))
+                               .expireAfterWrite(Duration.ofSeconds(value))
                                .initialCapacity(1)
                                .maximumSize(2000)
                                .build())
     ));
     return config;
   }
+
 }
