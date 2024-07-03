@@ -46,17 +46,16 @@ public abstract class EventFeeder {
       try {
         step(from);
       } catch (Exception e) {
-        log.error("Exception occurs at event feeder " + feederInfo.getEvent(), e);
+        log.error("{} Exception occurs! {}", feederInfo.getEvent(), e.getMessage(), e);
       }
     }
   }
 
   public void step(BigInteger from) {
-    // TODO: use @Timed for measuring cost
     long t = System.currentTimeMillis();
     BigInteger currentHeight = getCachedCurrentHeight();
     if (currentHeight.compareTo(from) < 0) {
-      log.warn("Query height = {} but current height = {} diff = {}}", currentHeight, from, from.subtract(currentHeight));
+      log.warn("{} Query height = {} but current height = {}", feederInfo.getEvent(), from, currentHeight);
       return;
     }
     BigInteger to = currentHeight.compareTo(from.add(feederInfo.getRange())) < 0 ? currentHeight : from.add(feederInfo.getRange());
@@ -72,7 +71,7 @@ public abstract class EventFeeder {
       log.info("{} Found {} from {}", feederInfo.getEvent(), eventLogs.size(), eventLogs.getFirst().getBlockNumber());
     }
     updateProcessedHeight(to);
-    log.debug("{} step is finished in {} ms", feederInfo.getEvent(), System.currentTimeMillis() - t);
+    log.debug("{} step() is finished in {} ms", feederInfo.getEvent(), System.currentTimeMillis() - t);
   }
 
   public List<EventLog> fetchEventLog(BigInteger from, BigInteger to) {

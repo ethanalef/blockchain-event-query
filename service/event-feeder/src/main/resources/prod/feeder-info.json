@@ -32,7 +32,7 @@
     "event": "lend-JTokenAction",
     "enabled": true,
     "interval": 4000,
-    "range": 30000,
+    "range": 10000,
     "start": 50224148,
     "topic": [
       "JTokenBalance(address,uint256)",
